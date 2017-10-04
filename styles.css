@@ -9,5 +9,6 @@ body {
   font-weight: 300;
   font-size: 18px;
   line-height: 1.8em;
-  color: #5D6063;
+  color: red;
+  /*color: #5D6063;*/
 }
