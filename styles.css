@@ -5,10 +5,6 @@
   background-color: #F7F7F7;
 }
 
-/* Mobile Styles */
-@media only screen and (max-width: 400px) {
-
-}
 body {
   font-family: "Zilla Slab", sans-serif;
   font-weight: 300;
@@ -105,7 +101,15 @@ footer {
 .section {
   border: 1px solid blue;
   display: flex;
-  width: 500px;
+  width: 650px;     /* my max width */
   flex-direction: column;
 
+}
+
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+  .section {
+    width: 400;
+  }
 }
