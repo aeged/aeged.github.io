@@ -5,6 +5,10 @@
   background-color: #F7F7F7;
 }
 
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+
+}
 body {
   font-family: "Zilla Slab", sans-serif;
   font-weight: 300;
@@ -91,14 +95,15 @@ footer {
   justify-content: space-around;
 }
 
-.page-container {
-  /*border: 1px dotted green;*/
+.page {
+  border: 1px dotted green;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
-.page {
-  /*border: 1px solid blue;*/
+.section {
+  border: 1px solid blue;
   display: flex;
   width: 500px;
   flex-direction: column;
