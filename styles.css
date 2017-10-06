@@ -1,74 +1,113 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   background-color: #F7F7F7;
+  margin: 0;
+  padding: 0;
 }
 
 body {
+  color: #5D6063;
   font-family: "Zilla Slab", sans-serif;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 1em;
   line-height: 1.8em;
-  color: #5D6063;
 }
+
+header {
+  border: 1px solid red;
+  color: #24292E;
+  font-family: "Roboto", sans-serif;
+  /*font-size: 3em;*/
+  line-height: normal;
+  padding: .5em;
+  text-align: center;
+  width: 100%;
+}
+
+header h1 {
+  border: 1px solid blue;
+  font-size: 3em;
+  padding: .25em;
+}
+
+header h2 {
+  font-size: 2em;
+  padding: .25em;
+}
+
+
+
+nav {
+  /*width: 100%;*/
+  /*background-color: #54575A;*/
+  /*border: 1px dotted purple;*/
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*list-style-type: none;*/
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 400px;
+  width: 75%;
+}
+
+nav li {
+  list-style-type: none;
+  padding-top: .1em;
+  padding-bottom: .1em;
+}
+
+footer {
+  bottom: 0;
+  color: #acacac;
+  font-size: 3vw;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+/*****************************************************************************/
 
 em, strong {
   font-synthesis: none;
 }
 
 em {
-  font-style: normal;
   background-color: #ffe792;
   border-radius: 2px;
-
+  font-style: normal;
 }
 
 strong {
-  /*font-style: italic;*/
+  font-style: normal;
   font-weight: 900;
   font-size: 1.25em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+/*h1, h2, h3, h4, h5, h6 {
   font-family: "Roboto", sans-serif;
-  line-height: 1.3em;
-  font-weight: normal;
-  font-style: normal;
   font-size: 1.5em;
-}
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.3em;
+}*/
 
 h1 {
-  font-size: 3em;
-  padding: .5em;
+  /*font-size: 3em;*/
+  /*padding: .5em;*/
   /*border: 1px solid red;*/
 }
 
 h2 {
-  font-size: 2em;
-  padding: .25em;
+  /*font-size: 2em;*/
+  /*padding: .25em;*/
 }
 
-
-header {
-  text-align: center;
-  color: #24292E;
-}
-
-nav {
-  background-color: #54575A;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  color: #acacac;
-  font-size: 13px;
-}
-
-/*A class that I can use to display in monospace font format*/
+/*A class that I can use to display code in monospace font format*/
 .code {
   font-family: "Oxygen Mono", monospace;
   font-size: .9em;
@@ -78,17 +117,11 @@ footer {
   border-radius: 2px;
 }
 
-.menu-container {
-  display: flex;
-  justify-content: center;
-  /*border: 1px dotted purple;*/
-}
-
 .menu {
-  display: flex;
   /*border: 1px solid red;*/
-  width: 500px;
+  display: flex;
   justify-content: space-around;
+  width: 500px;
 }
 
 .page {
@@ -101,15 +134,23 @@ footer {
 .section {
   border: 1px solid blue;
   display: flex;
-  width: 650px;     /* my max width */
   flex-direction: column;
-
+  width: 650px;     /* my max width */
 }
 
+/*****************************************************************************/
 
-/* Mobile Styles */
-@media only screen and (max-width: 400px) {
-  .section {
-    width: 400;
+/* Tablet Styles */
+@media only screen and (min-width: 401px) {
+  body {
+    font-size: 18px;
+  }
+
+  footer {
+    font-size: 13px;
+  }
+
+  .content {
+    width: 700px;
   }
 }
