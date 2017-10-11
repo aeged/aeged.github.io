@@ -74,7 +74,7 @@ footer {
   bottom: 0;
   color: #acacac;
   font-size: 3vw;
-  position: fixed;
+  position: static;
   text-align: center;
   width: 100%;
 }
