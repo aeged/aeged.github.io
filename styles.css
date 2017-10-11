@@ -11,34 +11,35 @@ body {
   font-family: "Lora", sans-serif;
   font-weight: 300;
   font-size: 1em;
-  line-height: 1.3em;
+  line-height: 1.5em;
 }
 
 header {
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   color: #24292E;
   font-family: "Fira Sans", sans-serif;
   /*font-size: 3em;*/
   line-height: normal;
-  padding: .5em;
+  margin: 2em;
   text-align: center;
   width: 100%;
 }
 
 header h1 {
-  border: 1px solid blue;
+  /*border: 1px solid blue;*/
   font-size: 3em;
-  padding: .25em;
+  margin: .25em;
 }
 
 header h2 {
   font-size: 2em;
-  padding: .25em;
+  margin: .25em;
 }
 
 
 
 nav {
+  margin: 1em;
   /*width: 100%;*/
   /*background-color: #54575A;*/
   /*border: 1px dotted purple;*/
@@ -58,16 +59,16 @@ nav ul {
 
 nav li {
   list-style-type: none;
-  padding-top: .1em;
-  padding-bottom: .1em;
+  margin-top: .1em;
+  margin-bottom: .1em;
 }
 
 article {
-  padding-top: 20px;
+  margin-top: 30px;
 }
 
 article:first-of-type {
-  padding-top: 0;
+  margin-top: 0;
 }
 
 footer {
@@ -78,8 +79,6 @@ footer {
   text-align: center;
   width: 100%;
 }
-
-/*****************************************************************************/
 
 em, strong {
   font-synthesis: none;
@@ -94,7 +93,7 @@ em {
 strong {
   font-style: normal;
   font-weight: 900;
-  font-size: 1.25em;
+  font-size: 1.2em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -108,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: 2em;
   font-weight: 100;
-  /*padding: .5em;*/
+  /*margin: .5em;*/
   /*border: 1px solid red;*/
 }
 
@@ -116,8 +115,19 @@ h2 {
   font-size: 1.3em;
   font-style: italic;
   color: grey;
-  /*padding: .25em;*/
+  /*margin: .25em;*/
 }
+
+p:first-of-type {
+  margin-top: 0;
+}
+
+p {
+  margin-top: 1em;
+}
+
+/*****************************************************************************/
+
 
 /*A class that I can use to display code in monospace font format*/
 .code {
@@ -137,7 +147,7 @@ h2 {
 }
 
 .page {
-  border: 1px dotted green;
+  /*border: 1px dotted green;*/
   display: flex;
   justify-content: center;
   width: 100%;
@@ -145,10 +155,25 @@ h2 {
 
 .content {
   border: 1px solid blue;
-  display: flex;
-  flex-direction: column;
-  width: 650px;     /* my max width */
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  width: 700px;     /* my max width */
 }
+
+.post {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+}
+
+/*.post-header {
+  border: 1px solid blue;
+}
+
+.post-text-body {
+  border: 1px dotted red;
+  width: 50;
+  float: right;
+}*/
 
 /*****************************************************************************/
 
@@ -162,7 +187,16 @@ h2 {
     font-size: 13px;
   }
 
-  .content {
-    width: 700px;
+  .post {
+    overflow: hidden;
+  }
+
+  .post-text-body {
+    border: 1px dotted red;
+    /*position: relative;*/
+    /*left: 50px;*/
+    width: 550px;
+    /*float: right;*/
+    /*margin: auto;*/
   }
 }
