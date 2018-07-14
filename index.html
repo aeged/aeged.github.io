@@ -3,16 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <title>Alex's Website</title>
-    <link id="stylesheet" rel="stylesheet" href="styles.css" />
+    <link id="stylesheet" rel="stylesheet" href="styles/styles.css" />
+    <!-- font & icon CDNs -->
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans:300,300i|Lora:400,700|Oxygen+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <meta name='viewport'
       content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
   </head>
   <body>
+    <button
+      id="toggle-dark-mode"
+      alt="Toggle Dark Mode Button">
+      <i id='dark-mode-icon' class="fas fa-adjust"></i>
+    </button>
     <div class="page">
-      <button style="display: flex; flex-direction: row; justify-content: right;">dark.
-      </button>
-      <script src="app.js"></script>
       <header>
         <h1>Welcome to my website.</h1>
         <h2>Where I will put up cool stuff...</h2>
@@ -67,5 +71,9 @@
         </p>
       </footer>
     </div>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- My Scripts -->
+    <script src="app.js"></script>
   </body>
 </html>
