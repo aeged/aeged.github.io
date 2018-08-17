@@ -5,8 +5,8 @@
     <description>Alexander Gednov's personal website for projects, blogging, etc.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 17 Aug 2018 12:38:23 -0700</pubDate>
-    <lastBuildDate>Fri, 17 Aug 2018 12:38:23 -0700</lastBuildDate>
+    <pubDate>Fri, 17 Aug 2018 12:48:50 -0700</pubDate>
+    <lastBuildDate>Fri, 17 Aug 2018 12:48:50 -0700</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -341,13 +341,13 @@
 
 &lt;p&gt;For further reading and explanation, check these references. Some of the code used in these examples comes from the blog posts by IndianGuru and AlexEllis. For more explanation about JSON and Go, check the eager.io and golang.org posts.&lt;/p&gt;
 
-&lt;p&gt;https://blog.alexellis.io/golang-json-api-client/&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://blog.alexellis.io/golang-json-api-client/&quot;&gt;blog.alexellis.io/golang-json-api-client/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://medium.com/@IndianGuru/consuming-json-apis-with-go-d711efc1dcf9&quot;&gt;Consuming JSON APIs with Go by IndianGuru&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;https://eager.io/blog/go-and-json/&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://eager.io/blog/go-and-json/&quot;&gt;eager.io/blog/go-and-json/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;https://blog.golang.org/json-and-go&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://blog.golang.org/json-and-go&quot;&gt;blog.golang.org/json-and-go&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://mholt.github.io/json-to-go/&quot;&gt;JSON-to-Go&lt;/a&gt;&lt;/p&gt;
 

@@ -100,6 +100,11 @@ hr {
   line-height: 28px;
   font-weight: 300;
 
+  // added colorful underline for the logo
+  pointer-events: all;
+  cursor: pointer;
+  @extend .link;
+
   // text color for site logo
   a {
     font-weight: 300;

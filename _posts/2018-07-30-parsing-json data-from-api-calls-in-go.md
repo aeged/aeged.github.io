@@ -349,13 +349,13 @@ Hopefully this post will pass on the knowledge I gained without the time commitm
 
 For further reading and explanation, check these references. Some of the code used in these examples comes from the blog posts by IndianGuru and AlexEllis. For more explanation about JSON and Go, check the eager.io and golang.org posts.
 
-https://blog.alexellis.io/golang-json-api-client/
+[blog.alexellis.io/golang-json-api-client/](https://blog.alexellis.io/golang-json-api-client/)
 
 [Consuming JSON APIs with Go by IndianGuru](https://medium.com/@IndianGuru/consuming-json-apis-with-go-d711efc1dcf9) 
 
-https://eager.io/blog/go-and-json/
+[eager.io/blog/go-and-json/](https://eager.io/blog/go-and-json/)
 
-https://blog.golang.org/json-and-go
+[blog.golang.org/json-and-go](https://blog.golang.org/json-and-go)
 
 [JSON-to-Go](https://mholt.github.io/json-to-go/)
 
