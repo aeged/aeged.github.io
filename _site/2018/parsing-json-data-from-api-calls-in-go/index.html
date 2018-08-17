@@ -1,0 +1,261 @@
+<!DOCTYPE html> <html> <head> <meta charset="utf-8"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title> Parsing JSON Data From API Calls in Go | aeged </title> <meta name="description" content=" Based on my experience learning Go, a tutorial on how to parse JSON data from calling an API. "> <meta name="keywords" content="Go, JSON, API, parse"> <meta name="HandheldFriendly" content="True"> <meta name="MobileOptimized" content="320"> <!-- Social: Facebook / Open Graph --> <meta property="og:type" content="article"> <meta property="article:author" content="Alexander Gednov"> <meta property="article:section" content=""> <meta property="article:tag" content="Go, JSON, API, parse"> <meta property="article:published_time" content="2018-07-30 00:00:00 -0700"> <meta property="og:url" content="http://localhost:4000/2018/parsing-json-data-from-api-calls-in-go/"> <meta property="og:title" content=" Parsing JSON Data From API Calls in Go | aeged "> <meta property="og:image" content="http://localhost:4000./assets/icons/MyIcons/light-flask.svg"> <meta property="og:description" content=" Based on my experience learning Go, a tutorial on how to parse JSON data from calling an API. "> <meta property="og:site_name" content="Alexander Gednov"> <meta property="og:locale" content="en_US"> <!-- Social: Twitter --> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:site" content=""> <meta name="twitter:title" content=" Parsing JSON Data From API Calls in Go | aeged "> <meta name="twitter:description" content=" Based on my experience learning Go, a tutorial on how to parse JSON data from calling an API. "> <meta name="twitter:image:src" content="http://localhost:4000./assets/icons/MyIcons/light-flask.svg"> <!-- Social: Google+ / Schema.org --> <meta itemprop="name" content=" Parsing JSON Data From API Calls in Go | aeged "> <meta itemprop="description" content=" Based on my experience learning Go, a tutorial on how to parse JSON data from calling an API. "> <meta itemprop="image" content="http://localhost:4000./assets/icons/MyIcons/light-flask.svg"> <!-- Canonical link tag --> <link rel="canonical" href="http://localhost:4000/2018/parsing-json-data-from-api-calls-in-go/"> <link rel="alternate" type="application/rss+xml" title="aeged" href="http://localhost:4000/feed.xml"> <!-- rel prev and next --> <link rel="stylesheet" href="http://localhost:4000/assets/css/main.css"> </head> <body> <main class="wrapper"> <header class="site-header"> <nav class="nav"> <div class="container"> <h1 class="logo"><a href="http://localhost:4000/">ae<span>ged</span></a></h1> <ul class="navbar"> <li><a href="http://localhost:4000/about">about me</a></li> <li><a href="http://localhost:4000/contact">contact</a></li> <li><a href="http://localhost:4000/projects">projects</a></li> <li><a href="http://localhost:4000/feed.xml" target="_blank">rss</a></li> </ul> </div> </nav> </header> <article class="post container" itemscope itemtype="http://schema.org/BlogPosting"> <header class="post-header"> <p class="post-meta"><time datetime="2018-07-30T00:00:00-07:00" itemprop="datePublished">Jul 30, 2018</time></p> <h1 class="post-title" itemprop="name headline">Parsing JSON Data From API Calls in Go</h1> </header> <div class="post-content" itemprop="articleBody"> <p>Parsing JSON data with Go is not straightforward if you’re a beginner to the language. There are tons of “hello world” level tutorials out there to give you an introduction to JSON parsing in Go, but not many practical ones. This post will serve those who desire a practical example. Prerequisite knowledge would be the basics of Go (if not, read <a href="https://github.com/karlseguin/the-little-go-book">The Little Go Book</a>) and some API basics (GET requests).</p> <p>Go is a <em>statically</em> typed language. This is what makes it difficult to parse something that is potentially dynamic (unknown at compile time, because we have yet to receive the data until we call it). You will find plenty of examples online that show you how to parse static JSON objects (i.e. ones with finite and expected values).</p> <p>So instead let’s call an API to show you how to transform a reasonably complex JSON response object into a Go object that your Go program will be able to use.</p> <p>Head over to the <a href="https://coinmarketcap.com/api/">CoinMarketCap API</a> and look at the <em>Listings</em> API.</p> <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bitcoin"</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"website_slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bitcoin"</span><span class="w">
+        </span><span class="p">},</span><span class="w"> 
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Litecoin"</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LTC"</span><span class="p">,</span><span class="w"> 
+            </span><span class="s2">"website_slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"litecoin"</span><span class="w">
+        </span><span class="p">},</span><span class="w"> 
+        </span><span class="err">...</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1525137187</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"num_cryptocurrencies"</span><span class="p">:</span><span class="w"> </span><span class="mi">1602</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">modularpattern</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// your module code goes here</span>
+    <span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">add</span><span class="p">:</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">sum</span> <span class="o">=</span> <span class="nx">sum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">sum</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="na">reset</span><span class="p">:</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>    
+        <span class="p">}</span>  
+    <span class="p">}</span>   
+<span class="p">}());</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">modularpattern</span><span class="p">.</span><span class="nx">add</span><span class="p">());</span>    <span class="c1">// alerts: 1</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">modularpattern</span><span class="p">.</span><span class="nx">add</span><span class="p">());</span>    <span class="c1">// alerts: 2</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">modularpattern</span><span class="p">.</span><span class="nx">reset</span><span class="p">());</span>  <span class="c1">// alerts: 0</span>
+</code></pre></div></div> <p>Using this API call, we can access all the cryptocurrencies listed on the site in a array of JSON objects called <code class="highlighter-rouge">data</code>. What makes this example different than most others I’ve seen online, is the fact that this API returns a large response JSON object of unknown size (denoted by the <code class="highlighter-rouge">...</code> in the code). That is, there are more than a thousand cryptocurrencies listed, and the number can (and will) change over time (this is actually denoted in the <code class="highlighter-rouge">metadata</code> field under <code class="highlighter-rouge">num_cryptocurrencies</code>).</p> <h2 id="the-boilerplate-code">The Boilerplate Code</h2> <p>We start with the following boilerplate code to set up our API request.</p> <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// TODO: Create struct for Listings</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://api.coinmarketcap.com/v2/listings"</span><span class="x">
+
+	</span><span class="n">client</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span><span class="x">
+		</span><span class="n">Timeout</span><span class="o">:</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="m">2</span><span class="p">,</span><span class="x"> </span><span class="c">// Maximum of 2 secs</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">MethodGet</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// some APIs require a User Agent to determine access purpose</span><span class="x">
+	</span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"User-Agent"</span><span class="p">,</span><span class="x"> </span><span class="s">"cryptotrackr-test"</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">client</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">getErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// Close when done reading from it, defer this action.</span><span class="x">
+	</span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+
+    </span><span class="c">// Read from res.Body into body, which is of type []byte.</span><span class="x">
+	</span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">readErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">list</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">Listings</span><span class="p">{}</span><span class="x">
+
+    </span><span class="c">// TODO: Unmarshal the data.</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div> <p>We still have two parts we need to finish that are implementation dependent; declaring the Go <code class="highlighter-rouge">struct</code> to hold the data and <a href="https://golang.org/pkg/encoding/json/#Unmarshal">Unmarshaling</a> the data.</p> <p>There are two ways to Unmarshal the JSON data; the practical way and the hard-but-informative way. For implementation purposes, I would use the practical way, but if you want to learn how Go handles recieved JSON data, read the hard-but-informative way.</p> <h2 id="the-practical-way">The Practical Way</h2> <p>Matt Holt made a fantastic tool called <a href="https://mholt.github.io/json-to-go/">JSON-to-Go</a> that will create a Go struct for parsing the JSON data in the shorthand backtick notation that Go offers. (I wish I knew about this site before I attempted this the hard way 😩)</p> <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span><span class="x"> </span><span class="n">Listings</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Data</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">ID</span><span class="x">          </span><span class="kt">int</span><span class="x">    </span><span class="s">`json:"id"`</span><span class="x">
+		</span><span class="n">Name</span><span class="x">        </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"name"`</span><span class="x">
+		</span><span class="n">Symbol</span><span class="x">      </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"symbol"`</span><span class="x">
+		</span><span class="n">WebsiteSlug</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"website_slug"`</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="s">`json:"data"`</span><span class="x">
+	</span><span class="n">Metadata</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">Timestamp</span><span class="x">           </span><span class="kt">int</span><span class="x">         </span><span class="s">`json:"timestamp"`</span><span class="x">
+		</span><span class="n">NumCryptocurrencies</span><span class="x"> </span><span class="kt">int</span><span class="x">         </span><span class="s">`json:"num_cryptocurrencies"`</span><span class="x">
+		</span><span class="n">Error</span><span class="x">               </span><span class="k">interface</span><span class="p">{}</span><span class="x"> </span><span class="s">`json:"error"`</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="s">`json:"metadata"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div> <p>Putting the API example return code in the JSON-to-Go converter should output that <code class="highlighter-rouge">struct</code>.</p> <p>All we need to do is to use the default <code class="highlighter-rouge">json.Unmarshal</code> method, and Go will take care of all the hard stuff for us by matching the key-value pairs to their corresponding JSON fields.</p> <p>The finished code will look like so:</p> <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+	</span><span class="s">"io/ioutil"</span><span class="x">
+	</span><span class="s">"log"</span><span class="x">
+	</span><span class="s">"net/http"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="c">// Go struct for the Listings</span><span class="x">
+</span><span class="c">// Note: fields must be a capital letter to be encoded.</span><span class="x">
+</span><span class="k">type</span><span class="x"> </span><span class="n">Listings</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Data</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">ID</span><span class="x">          </span><span class="kt">int</span><span class="x">    </span><span class="s">`json:"id"`</span><span class="x">
+		</span><span class="n">Name</span><span class="x">        </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"name"`</span><span class="x">
+		</span><span class="n">Symbol</span><span class="x">      </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"symbol"`</span><span class="x">
+		</span><span class="n">WebsiteSlug</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"website_slug"`</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="s">`json:"data"`</span><span class="x">
+	</span><span class="n">Metadata</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">Timestamp</span><span class="x">           </span><span class="kt">int</span><span class="x">         </span><span class="s">`json:"timestamp"`</span><span class="x">
+		</span><span class="n">NumCryptocurrencies</span><span class="x"> </span><span class="kt">int</span><span class="x">         </span><span class="s">`json:"num_cryptocurrencies"`</span><span class="x">
+		</span><span class="n">Error</span><span class="x">               </span><span class="k">interface</span><span class="p">{}</span><span class="x"> </span><span class="s">`json:"error"`</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="s">`json:"metadata"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://api.coinmarketcap.com/v2/listings"</span><span class="x">
+
+	</span><span class="n">client</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span><span class="x">
+		</span><span class="n">Timeout</span><span class="o">:</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="m">2</span><span class="p">,</span><span class="x"> </span><span class="c">// Maximum of 2 secs</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">MethodGet</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// some APIs require a User Agent to determine access purpose</span><span class="x">
+	</span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"User-Agent"</span><span class="p">,</span><span class="x"> </span><span class="s">"cryptotrackr-test"</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">client</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">getErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// Close when done reading from it, defer this action.</span><span class="x">
+	</span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+
+    </span><span class="c">// Read from res.Body into body, which is of type []byte.</span><span class="x">
+	</span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">readErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">list</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">Listings</span><span class="p">{}</span><span class="x">
+
+    </span><span class="c">// Unmarshal the data.</span><span class="x">
+	</span><span class="n">jsonErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">(</span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="o">&amp;</span><span class="n">list</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">jsonErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">jsonErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div> <h2 id="the-hard-but-informative-way">The Hard-But-Informative Way</h2> <p><em>Warning: the practical way is much quicker, cleaner, and overall better for unmarshaling the JSON data. However, reading this method will allow you to better understand how to do more complex unmarshaling in Go</em>.</p> <p>If you look over some of the <a href="https://blog.golang.org/json-and-go">official documentation</a> and <a href="https://eager.io/blog/go-and-json/">this useful post at eager.io</a>, you will see that most JSON objects that consist of key-value pairs could be defined as a <code class="highlighter-rouge">map[string]interface{}</code> type in Go. This is because the key is usually a <code class="highlighter-rouge">string</code>, and the value is typically unknown. When we aren’t sure of something’s type, we use the generic <code class="highlighter-rouge">interface{}</code> type to characterize it. An example in this API of why would would use <code class="highlighter-rouge">map[string]interface{}</code> is the in the <code class="highlighter-rouge">metadata</code> field.</p> <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"metadata"</span><span class="o">:</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="s">"timestamp"</span><span class="o">:</span><span class="x"> </span><span class="m">1525137187</span><span class="p">,</span><span class="x"> 
+    </span><span class="s">"num_cryptocurrencies"</span><span class="o">:</span><span class="x"> </span><span class="m">1602</span><span class="p">,</span><span class="x"> 
+    </span><span class="s">"error"</span><span class="o">:</span><span class="x"> </span><span class="n">null</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div> <p>Looking back at the API example return, we see that <code class="highlighter-rouge">timesamp</code> is paied to a number, whilst <code class="highlighter-rouge">error</code> would be paired to a <code class="highlighter-rouge">string</code> (if the value is non-null).</p> <p>Because this map of key-value pairs could have numeric or string values, we use the generic <code class="highlighter-rouge">interface{}</code> type. This gives us the flexibility of assigning types to our generic interfaces using <em>type inference</em>.</p> <p>Therefore our objective is to handle these discrepencies by creating and utilizing a custom Unmarshal method.</p> <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+	</span><span class="s">"github.com/mitchellh/mapstructure"</span><span class="x"> </span><span class="c">// for decoding objects into maps.</span><span class="x">
+	</span><span class="s">"io/ioutil"</span><span class="x">
+	</span><span class="s">"log"</span><span class="x">
+	</span><span class="s">"net/http"</span><span class="x">
+	</span><span class="s">"strings"</span><span class="x"> </span><span class="c">// use for UnmarshalJSON</span><span class="x">
+	</span><span class="s">"time"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">Listings</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Data</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">ID</span><span class="x">          </span><span class="kt">int</span><span class="x">    
+		</span><span class="n">Name</span><span class="x">        </span><span class="kt">string</span><span class="x"> 
+		</span><span class="n">Symbol</span><span class="x">      </span><span class="kt">string</span><span class="x"> 
+		</span><span class="n">WebsiteSlug</span><span class="x"> </span><span class="kt">string</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">Metadata</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">Timestamp</span><span class="x">           </span><span class="kt">int</span><span class="x">         
+		</span><span class="n">NumCryptocurrencies</span><span class="x"> </span><span class="kt">int</span><span class="x">         
+		</span><span class="n">Error</span><span class="x">               </span><span class="k">interface</span><span class="p">{}</span><span class="x"> 
+	</span><span class="p">}</span><span class="x"> 
+</span><span class="p">}</span><span class="x">
+
+</span><span class="c">// Custom Unmarshal method for objects of type Listings.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">l</span><span class="x"> </span><span class="o">*</span><span class="n">Listings</span><span class="p">)</span><span class="x"> </span><span class="n">UnmarshalJSON</span><span class="p">(</span><span class="n">raw</span><span class="x"> </span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="c">// Going to store JSON here later as a map of strings to interfaces (interface is used for unknown types).</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">rawListings</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}</span><span class="x">
+
+	</span><span class="c">// Unmarshal raw byte array into our map.</span><span class="x">
+	</span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span><span class="x"> </span><span class="o">&amp;</span><span class="n">rawListings</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// Extract data from JSON object.</span><span class="x">
+	</span><span class="k">for</span><span class="x"> </span><span class="n">key</span><span class="p">,</span><span class="x"> </span><span class="n">val</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">rawListings</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">ToLower</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="s">"metadata"</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="c">// Need to characterize val as type map[string]interface{} with type inference to use as method argument.</span><span class="x">
+			</span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">val</span><span class="o">.</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{})</span><span class="x">
+
+			</span><span class="c">// Convert map[string]interface{} into objects using Hashicorp's mapstructure.Decode(in, out) method.</span><span class="x">
+			</span><span class="n">mapstructure</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="x"> </span><span class="o">&amp;</span><span class="n">l</span><span class="o">.</span><span class="n">Metadata</span><span class="p">)</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">ToLower</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="s">"data"</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="c">// Convert all of the Tickrs in the returned JSON array.</span><span class="x">
+			</span><span class="k">var</span><span class="x"> </span><span class="n">newTickr</span><span class="x"> </span><span class="n">Tickr</span><span class="x">
+			</span><span class="k">for</span><span class="x"> </span><span class="n">tickr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">val</span><span class="o">.</span><span class="p">([]</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">{</span><span class="x">
+				</span><span class="c">// Copy data into a tickr object.</span><span class="x">
+				</span><span class="n">mapstructure</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="n">tickr</span><span class="p">,</span><span class="x"> </span><span class="o">&amp;</span><span class="n">newTickr</span><span class="p">)</span><span class="x">
+				</span><span class="c">// Append it to the slice of Tickrs.</span><span class="x">
+				</span><span class="n">l</span><span class="o">.</span><span class="n">Tickrs</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="nb">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">Tickrs</span><span class="p">,</span><span class="x"> </span><span class="n">newTickr</span><span class="p">)</span><span class="x">
+			</span><span class="p">}</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://api.coinmarketcap.com/v2/listings"</span><span class="x">
+
+	</span><span class="n">client</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span><span class="x">
+		</span><span class="n">Timeout</span><span class="o">:</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="m">2</span><span class="p">,</span><span class="x"> </span><span class="c">// Maximum of 2 secs</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">MethodGet</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// some APIs require a User Agent to determine access purpose</span><span class="x">
+	</span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"User-Agent"</span><span class="p">,</span><span class="x"> </span><span class="s">"cryptotrackr-test"</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">client</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">getErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">getErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="c">// Close when done reading from it, defer this action.</span><span class="x">
+	</span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+
+    </span><span class="c">// Read from res.Body into body, which is of type []byte.</span><span class="x">
+	</span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">readErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">readErr</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">list</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">Listings</span><span class="p">{}</span><span class="x">
+
+    </span><span class="c">// Unmarshal the data.</span><span class="x">
+    </span><span class="n">jsonErr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">list</span><span class="o">.</span><span class="n">UnmarshalJSON</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="x">
+        </span><span class="k">if</span><span class="x"> </span><span class="n">jsonErr</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">jsonErr</span><span class="p">)</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div> <p><em>Note: we use the Go package <a href="https://github.com/mitchellh/mapstructure">github.com/mitchellh/mapstructure</a>, so make sure to install it.</em></p> <p>Notice how we call our custom method. Since it belongs to our list object, we call <code class="highlighter-rouge">list.UnmarshalJSON()</code>.</p> <h2 id="conclusion">Conclusion</h2> <p>I learned a lot by doing the is the hard way, but it taught me a lot about how to handle types in a flexible way using interfaces.</p> <p>However, I would’ve picked the practical way the first time around if I knew about using the amazing <a href="https://mholt.github.io/json-to-go/">JSON-to-Go</a> tool to unmarshal the JSON data in a straightforward way.</p> <p>Hopefully this post will pass on the knowledge I gained without the time commitment or stress!</p> <h2 id="references">References</h2> <p>For further reading and explanation, check these references. Some of the code used in these examples comes from the blog posts by IndianGuru and AlexEllis. For more explanation about JSON and Go, check the eager.io and golang.org posts.</p> <p><a href="https://blog.alexellis.io/golang-json-api-client/">blog.alexellis.io/golang-json-api-client/</a></p> <p><a href="https://medium.com/@IndianGuru/consuming-json-apis-with-go-d711efc1dcf9">Consuming JSON APIs with Go by IndianGuru</a></p> <p><a href="https://eager.io/blog/go-and-json/">eager.io/blog/go-and-json/</a></p> <p><a href="https://blog.golang.org/json-and-go">blog.golang.org/json-and-go</a></p> <p><a href="https://mholt.github.io/json-to-go/">JSON-to-Go</a></p> </div> </article> <footer class="site-footer"> <div class="container"> <small class="block">&copy; 2018 Alexander Gednov &middot; &lt;/&gt; Powered by <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://github.com/heiswayi/thinkspace">Thinkspace theme</a></small> </div> </footer> </main> <script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-XXXXX-XX']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })(); </script> </body> </html>
