@@ -5,7 +5,7 @@ description   : "Alexander Gednov's personal website for projects, blogging, etc
 keywords      : "Jekyll, theme, free, download, SEO, blog, web, minimalist, thinkspace"
 url           : https://aeged.github.io/ # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
-cover         : "" # image uri like logo/cover image for site seo
+cover         : "./assets/icons/MyIcons/light-flask.svg" # image uri like logo/cover image for site seo
 
 google_analytics  : UA-XXXXX-XX
 twitter_username  : ""
@@ -35,7 +35,7 @@ sass:
 
 # Author settings
 author:
-  name     : "Alexander Gednov"
+  name     : "aeged"
 
 plugins:
   - jekyll-sitemap
@@ -48,5 +48,9 @@ navbar:
     title: About
   - slug : blog
     title: Blog
+  - slug : contact
+    title: Contact
+  - slug : projects
+    title: Projects
 
 exclude: ["gulp", "node_modules", "bower", "bower_components", "config.rb", "src", "Gemfile", "Gemfile.lock", ".rvmrc", ".rbenv-version", "package.json", "gulpfile.js", "README.md", "Rakefile", "changelog.md", "script"]

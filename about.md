@@ -8,7 +8,7 @@ permalink: /about/
 <img src="../assets/images/author.jpg" alt="author" width="100" align="middle" style="border-radius: 50%" />
 --->
 
-Hello there!
+Hello there! 👋
 
 My name is Alexander Gednov, and I am a Computer Science & Business Administration student at the *University of Southern California* (USC).
 
