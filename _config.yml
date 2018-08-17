@@ -1,9 +1,9 @@
 # Site settings
-title_left    : "Think"
-title_right   : "space" # default: ""
-description   : "Minimalist Jekyll theme for technical writing blog."
+title_left    : "ae"
+title_right   : "ged" # default: ""
+description   : "Alexander Gednov's personal website for projects, blogging, etc."
 keywords      : "Jekyll, theme, free, download, SEO, blog, web, minimalist, thinkspace"
-url           : https://heiswayi.github.io/thinkspace # site url
+url           : https://aeged.github.io/ # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
 cover         : "" # image uri like logo/cover image for site seo
 
@@ -18,6 +18,13 @@ permalink   : /:year/:title/
 markdown    : kramdown
 highlighter : rouge
 
+# More › http://kramdown.gettalong.org/quickref.html
+# Options › http://kramdown.gettalong.org/options.html
+kramdown:
+  input:          GFM
+  # https://github.com/jekyll/jekyll/pull/4090
+  syntax_highlighter: rouge
+
 source      : ./
 destination : ./_site
 
@@ -28,7 +35,7 @@ sass:
 
 # Author settings
 author:
-  name     : "John Doe"
+  name     : "Alexander Gednov"
 
 plugins:
   - jekyll-sitemap
