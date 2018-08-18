@@ -23,3 +23,11 @@ I am passionate, curious, organized, industrious, ambitious, and action-oriented
 My inpiration stems from a passion for computers, business, finance, and design.
 I'm always excited to meet or work with anyone who shares my passion and discover innovative solutions to profound problems. 
 
+#### Interests
+
+One of my core characteristics is *curiostiy*. 
+
+I definitely can't resist staying up all night learning new things.
+Whether it's going through a watching a cool documentary, reading a technical article or economic news, or getting lost on wikipedia, I'm always looking to learn something new.
+
+As such, I have an eclectic taste, and am passionate about a lot of things!
