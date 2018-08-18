@@ -20,11 +20,15 @@ Stay tuned to see what I've made next!
 
 #### Decentralized Academic Repository (DAR)
 
+<a href="https://aeged.github.io/decentralized-academic-repository" target="_blank">website</a>
+
 A decentralized academic repository aimed at disrupting the academic publishing industry.
 
 Currently under development in a private repository (for the moment).
 
-[Contact me](/contact) if you are interested in the project or would like to read a **working draft of the whitepaper**.
+*Working draft* of the whitepaper available at the project website.
+
+[Contact me](/contact) if you are interested and want more information.
 
 
 <br/>
@@ -34,6 +38,8 @@ Currently under development in a private repository (for the moment).
 <br/>
 
 
-#### <a href="https://github.com/aeged/cryptotrackr" target="_blank">Cryptotrackr</a>
+#### Cryptotrackr
+
+<a href="https://aeged.github.io/cryptotrackr" target="_blank">website</a> \| <a href="https://github.com/aeged/cryptotrackr" target="_blank">code</a>
 
 A cryptocurrency price tracker made using [React](https://reactjs.org/) and [AntDesign](https://ant.design/).
