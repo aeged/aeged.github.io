@@ -5,8 +5,8 @@
     <description>Alexander Gednov's personal website for projects, blogging, etc.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 18 Aug 2018 00:14:54 -0700</pubDate>
-    <lastBuildDate>Sat, 18 Aug 2018 00:14:54 -0700</lastBuildDate>
+    <pubDate>Sat, 18 Aug 2018 00:16:21 -0700</pubDate>
+    <lastBuildDate>Sat, 18 Aug 2018 00:16:21 -0700</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -489,9 +489,9 @@ When you are finished, unmount using the macOS default &lt;code class=&quot;high
 
 &lt;p&gt;&lt;strong&gt;Still experimenting with ifuse, don’t know how to quite use it. was reading &lt;a href=&quot;https://wiki.gentoo.org/wiki/Apple_iPod,_iPad,_iPhone#Mounting&quot;&gt;this helpful page&lt;/a&gt; to learn some usage&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Tue, 23 Jan 2018 00:00:00 -0800</pubDate>
-        <link>http://localhost:4000/2018/how-to-access-ios-filesystem-via-usb/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/how-to-access-ios-filesystem-via-usb/</guid>
+        <pubDate>Mon, 23 Jan 2017 00:00:00 -0800</pubDate>
+        <link>http://localhost:4000/2017/how-to-access-ios-filesystem-via-usb/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/how-to-access-ios-filesystem-via-usb/</guid>
         
         
       </item>
