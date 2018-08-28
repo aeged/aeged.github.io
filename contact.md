@@ -10,7 +10,7 @@ keywords: "contact"
 
 
 
-<a href="https://www.dropbox.com/s/wwchveqssb81q7j/Resume_v5.pdf?dl=0" target="_blank"><i class="fas fa-file-alt"></i> resume</a>
+<a href="https://www.dropbox.com/s/cdq9b1xu7zw3ply/Resume.pdf?dl=0" target="_blank"><i class="fas fa-file-alt"></i> resume</a>
 
 <a href="mailto:alexgednov@gmail.com"><i class="fas fa-envelope"></i> email</a>
 
