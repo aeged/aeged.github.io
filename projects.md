@@ -32,7 +32,7 @@ keywords: "projects"
 	}
 </style>
 
-##### Tools
+<!-- ##### Tools
 
 <div class="images tools">
 	<a href="https://adobe.com/Illustrator" target="_blank"><img src="../assets/icons/Tools/adobe_ai.png" alt="Adobe Illustrator" /></a>
@@ -61,11 +61,11 @@ keywords: "projects"
 	<a href="https://en.wikipedia.org/wiki/Go_(programming_language)" target="_blank"><img src="../assets/icons/Languages/go.png" /></a>
 </div>
 
-<br/>
+<br/> -->
 
-Here are all the projects I've created or worked on by category.
+Here are all the personal projects I've created or worked on in my free time.
 
-* [Coding](#coding)
+* [Technical](#coding)
 
 * [Design](#design)
 
@@ -75,14 +75,27 @@ Stay tuned to see what I've made next!
 <br/>
 
 
-# Coding
+# Technical
+
+#### Zeta Score
+
+Goal: prevent user accounts from participating in transactions with known/highly probable malicious accounts on the blockchain.
+
+We believe that by determining a ***Zeta Score***, we can provide users metric for maliciousness so that they may determine whether they will transact with the account or not.
+
+The plan is to analyze the blockchain transactional data and other sources in order to determine the ***Zeta Score***.
+
+
+This project is a USC Dev Nights project, where USC students work throughout a semester to deliver a proof-of-concept to a panel of judges and investors.
+
+Learn more at [uscnights.dev](http://www.uscnights.dev)
 
 
 #### Decentralized Academic Repository (DAR)
 
 <a href="https://aeged.github.io/decentralized-academic-repository" target="_blank">website</a>
 
-A decentralized academic repository aimed at disrupting the academic publishing industry.
+A decentralized academic repository powered by blockchain aimed at disrupting the academic publishing industry.
 
 Currently under development in a private repository (for the moment).
 
