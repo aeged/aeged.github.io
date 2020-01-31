@@ -17,20 +17,28 @@ General tips:
 * Always import specifically using `from x import y`
   * Using the dot operator e.g. `import x; x.y` is a dictionary lookup each time, unnecessary slowdown
 * Use the standard library as much as possible 
-    * Map function for iterating and transforming **finite** lists
-      * Generators for iterating **infinite** lists (memory efficient, doesn't need to store whole thing.. just generates it)
-        * Itertools for combinatorics stuff 
+  * Comprehensions for quickly building lists/dicts with a one-liner
+  * Map function for iterating and transforming **finite** lists
+    * Generators for iterating **infinite** lists (memory efficient, doesn't need to store whole thing.. just generates it)
+      * Itertools for combinatorics stuff 
 * Write your code in functions (underlying Cpython implementation makes globals outside of functions costs more time)
 
-### Add items to a dictionary on the fly
+## Comprehensions
 
-When an item isn't present in a dictionary, we can get exceptions :( 
+These are amazing space savers in Python. Creating lists or dictionaries in a one-liner is definitely a win.
 
-`defaultdict` from `collections` allows us to automatically initialize dictionary values on the fly (like a default value).
+```python
 
-## Datastructures
+>>> s = 'hello world'
+>>> n = [i for i in range(len(s))]  # list comprehension
+>>> n
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+>>> d = {s[i]:n[i] for i in range(len(s))}  # dict comprehension
+>>> d
+{'h': 0, 'e': 1, 'l': 9, 'o': 7, ' ': 5, 'w': 6, 'r': 8, 'd': 10}
+```
 
-### Stacks
+## Stacks
 
 [lists as stacks](https://docs.python.org/3.8/tutorial/datastructures.html#using-lists-as-stacks)
 
@@ -45,7 +53,7 @@ print(st)  # prints ['a','b','c']
 st[-1]  # stack.peek() 
 ```
 
-### Queues
+## Queues
 
 [Queue docs](https://docs.python.org/3.8/library/queue.html)
 
@@ -71,7 +79,7 @@ Use `queue.PriorityQueue`
 
 Lowest value entry is first (min heap) e.g. `sorted(list(entries))[0]` 
 
-#### Max Heap 
+### Max Heap 
 
 Just use priority queue but reverse the key
 
@@ -138,16 +146,56 @@ return d
 # {'blue': [2, 4], 'red': [1], 'yellow': [1, 3]}
 ```
 
+## Add items to a dictionary on the fly
 
+When an item isn't present in a dictionary, we can get exceptions :( 
 
-### Counting Element Frequency using `Counter`
+`defaultdict` from `collections` allows us to automatically initialize dictionary values on the fly (like a default value).
 
 ```python
-from collections import Counter
+from collections import defaultdict
+# EXAMPLE: check if s1 and s2 are anagrams of each other
+s1 = 'abba'
+s2 = 'zaba'
+counter = defaultdict(int) # default type initialized for each entry is an int initialized to default value
+# default int value is initialized to 0, so all counters start from 0
+for i in range(len(s1)):
+ counter[s1[i]] += 1
+ counter[s2[i]] -= 1
+is_anagram = True
+for k,v in counter.items():
+ if 0 != v:
+ is_anagram = False
+return counter, is_anagram
+# {a: 0, b: 1, z: 1}, False
+ 
+# EXAMPLE: adding to a list (from Python docs)
+s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+d = defaultdict(list)
+for k, v in s:
+ d[k].append(v)
+return d
+# {'blue': [2, 4], 'red': [1], 'yellow': [1, 3]}
+```
+
+[DefaultDict docs](https://docs.python.org/3.8/library/collections.html#collections.defaultdict)
+
+
+## Counting Element Frequency using `Counter`
+
+We saw that we could count items in an iterable string using `defaultdict`, however most of the time `Counter` is a better method.
+
+Counter is an interesting data structure in python that acts as a multi-set (or bag). It is a set that allows duplicate elements by counting them.
+
+```python
+>>> from collections import Counter
+>>> s = 'hello world' 
+>>> dict(Counter(s))
+{'h': 1, 'e': 1, 'l': 3, 'o': 2, ' ': 1, 'w': 1, 'r': 1, 'd': 1}
 
 ```
 
-### Binary Search with `bisect`
+## Binary Search with `bisect`
 
 Python's `bisect` library is awesome for inserting new items into an already sorted list.
 
@@ -162,9 +210,7 @@ insort_right(sorted_list, element)  # inserts at index returned by bisect_right
 insort_left(sorted_list, element)  # inserts at index returned by bisect_left
 ```
 
-References:
-
-* https://www.codespeedy.com/bisect-module-array-bisecting-algorithms-in-python/ 
+See more at [Codespeedy](https://www.codespeedy.com/bisect-module-array-bisecting-algorithms-in-python/)
 
 ### String Concatenation
 
@@ -176,7 +222,7 @@ list_of_strs = list('hello world!')
 ## 'hello world!'
 ```
 
-### Pairing elements of objects as tuples (with `zip`)
+## Pairing elements of objects as tuples (with `zip`)
 
 `zip` takes any number of iterables as arguments and returns an iterator over tuples of their corresponding elements.
 
@@ -185,7 +231,7 @@ list(zip([1,2,3], ('a','b','c'), {'*','^','_'}))
 ## [(1, 'a', '*'), (2, 'b', '^'), (3, 'c', '_')]
 ```
 
-### Transforming Iterable Objects (with `map`)
+## Transforming Iterable Objects (with `map`)
 
 Great for transforming iterable objects.
 
@@ -203,21 +249,69 @@ pow_of_two = list(map(lambda p: 2**p, powers))  # output: [1, 2, 4, 8]
 set(map(lambda x,p: p-x, powers, pow_of_two))  # {1, 2, 5} 
 ```
 
-### Itertools 
+## Itertools 
 
 [itertools docs](https://docs.python.org/3/library/itertools.html)
 
-Great for combinatorics
+Great for combinatorics questions.
 
-### Generators
+```python
+# simple cartestian product (i.e. possible combinations of inputs)
+>>> import itertools as it
+>>> list(it.product(['x','y'],[0,1]))
+[('x', 0), ('x', 1), ('y', 0), ('y', 1)]
+# merge two iterables into one
+>>> list(it.chain([1, 2, 3], [4, 5, 6]))
+[1, 2, 3, 4, 5, 6]
+# flatten a 2d array
+>>> list(it.chain.from_iterable([ [1, 2, 3], [4, 5, 6] ]))
+[1, 2, 3, 4, 5, 6]
+```
+
+Examples borrowed from [Real Python](https://realpython.com/python-itertools/), which has a great in-depth article on Itertools with more examples.
+
+## Generators
 
 [generators on Python wiki](https://wiki.python.org/moin/Generators)
 
 Generators are very memory efficient ([see for more info](https://medium.com/learning-better-ways-of-interpretting-and-using/python-generators-memory-efficient-programming-tool-41f09077353c)).
 
-Use them to iterate until you find entries you need using `next()`
+You'll occassionally encounter these as returned by certain methods in Python.
+
+However, you can also create your own functions that return generators by using the `yield` keyword in place of a `return`.
+
+Typically, iterate over the returned generator until you find the entries you need using `next()`.
+
+```python
+# Fibonacci sequence example
+def fib_seq():
+  a,b=0,1
+  while True:
+    yield a
+    a,b=b,a+b
+Running this in the python console produces this:
+>>> fib_seq()
+<generator object fib_seq at 0x1020edbd0>
+>>> f = fib_seq()
+>>> next(f)
+0
+>>> next(f)
+1
+>>> next(f)
+1
+>>> next(f)
+2
+>>> next(f)
+3
+>>> next(f)
+5
+>>> next(f)
+8
+```
+
+The ability to iterate over the generator theoretically infinite amount of times makes it really good for things such as a stream.
+For more info, [Real Python](https://realpython.com/introduction-to-python-generators/) has a great article going in-depth on generators.
 
 ## References
 
 * https://www.tutorialspoint.com/python-tricks-for-competitive-coding
-* 
