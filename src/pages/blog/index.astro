@@ -4,7 +4,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 const posts = (await getCollection('blog')).sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <MinimalLayout title="Blog">
-  <h1 class="page-title">Blog</h1>
   <section class="post-list">
     {posts.map(({ slug, data }) => (
       <article class="post">
