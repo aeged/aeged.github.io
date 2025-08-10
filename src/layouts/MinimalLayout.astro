@@ -145,21 +145,23 @@ const here = Astro.url.pathname;
       /* Blog article code blocks — match .card styling */
       /* Shiki renders <pre class="astro-code ...">; normalize all pre blocks */
       article pre,
-      article pre.astro-code{
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 20px 22px;
-        margin: 22px 0;
-        overflow: auto;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        color: #111827;
-        font-size: 12px;
-        line-height: 1.3;
+      article pre.astro-code,
+      article :where(pre.astro-code){
+        background: var(--card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        padding: 20px 22px !important;
+        margin: 22px 0 !important;
+        overflow: auto !important;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+        color: #111827 !important;
+        font-size: 12px !important;
+        line-height: 1.3 !important;
       }
-      article pre code{
-        background: transparent; /* avoid nested background from highlighter */
-        padding: 0;
+      article pre code,
+      article pre.astro-code code{
+        background: transparent !important; /* avoid nested background from highlighter */
+        padding: 0 !important;
       }
     </style>
   </head>
