@@ -141,6 +141,24 @@ const here = Astro.url.pathname;
         background-size: 0 1px !important;   /* disable hover underline */
         outline: none;                       /* no focus ring on disabled item */
       }
+
+      /* Blog article code blocks — match .card styling */
+      article pre{
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        margin: 22px 0;
+        overflow: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        color: #111827;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      article pre code{
+        background: transparent; /* avoid nested background from highlighter */
+        padding: 0;
+      }
     </style>
   </head>
   <body>
