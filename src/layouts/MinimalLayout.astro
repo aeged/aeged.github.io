@@ -170,7 +170,7 @@ const here = Astro.url.pathname;
       <header>
         <div class="brand">Alex Gednov</div>
         <nav class="site-nav">
-          <a href="/about" aria-current={(here === '/' || here.startsWith('/about')) ? 'page' : undefined}>About</a>
+          <a href="/" aria-current={here === '/' ? 'page' : undefined}>About</a>
           <a href="/blog" aria-current={here.startsWith('/blog') ? 'page' : undefined}>Blog</a>
         </nav>
       </header>
