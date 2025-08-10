@@ -2,11 +2,15 @@
 import MinimalLayout from "../layouts/MinimalLayout.astro";
 ---
 <MinimalLayout title="About">
-<pre class="card"> def greeting() -> None:
-    print("Hello neighbor")</pre>
-  <p>I'm interested in intelligent agents and generative AI.
-  I also enjoy photography.</p>
-
-  <p class="lede"><a href="mailto:alexgednov@gmail.com">alexgednov@gmail.com</a></p>
-  <p class="lede"><a href="https://github.com/aeged" target="_blank" rel="noopener">@aeged</a></p>
+  <pre class="card">with torch.inference_mode():
+    tk.decode(
+        model.generate(
+            **tk("Hello! 👋"),
+        )[0]
+    )</pre>
+  <p>I'm interested in intelligent agents and generative AI ✨.</p>
+  <p>I also enjoy photography.</p>
+  <p>_</p>
+  <p class="lede"><a href="mailto:alexgednov@gmail.com">email</a></p>
+  <p class="lede"><a href="https://github.com/aeged" target="_blank" rel="noopener">github</a></p>
 </MinimalLayout>
