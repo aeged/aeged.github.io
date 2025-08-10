@@ -122,6 +122,15 @@ const here = Astro.url.pathname;
         margin-top: .5rem;
       }
 
+      /* Blog index titles: black text, no underline */
+      .post .post-title a,
+      .post .post-title a:visited,
+      .post .post-title a:hover,
+      .post .post-title a:focus{
+        color: var(--text);
+        background-image: none;
+      }
+
       /* TASK C — Navigation: grey out current page */
       .site-nav a[aria-current="page"]{
         color: var(--muted);
