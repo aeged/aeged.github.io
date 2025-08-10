@@ -67,8 +67,8 @@ const { title = 'Home', description = 'Personal site & blog' } = Astro.props;
       <header>
         <div class="brand">Alex Gednov</div>
         <nav>
-          <a href="/" class="{Astro.url.pathname === '/' ? 'active' : ''}">Posts</a>
-          <a href="/about" class="{Astro.url.pathname.startsWith('/about') ? 'active' : ''}">About</a>
+          <a href="/" class="{(Astro.url.pathname === '/' || Astro.url.pathname.startsWith('/about')) ? 'active' : ''}">About</a>
+          <a href="/blog" class="{Astro.url.pathname.startsWith('/blog') ? 'active' : ''}">Blog</a>
         </nav>
       </header>
       <main>
