@@ -5,4 +5,9 @@ _site/
 .vscode
 node_modules
 package-lock.json
+.yarn/
+pnpm-lock.yaml
+dist/
+.astro/
+.bundle/
 .sass-cache

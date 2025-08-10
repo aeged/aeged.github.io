@@ -1,0 +1,36 @@
+---
+title: Parsing JSON Data From API Calls in Go
+description: Practical tutorial on parsing JSON from an API in Go.
+date: 2018-07-30
+---
+
+Parsing JSON data with Go is not straightforward if you're a beginner to the language. There are tons of "hello world" level tutorials out there to give you an introduction to JSON parsing in Go, but not many practical ones. This post will serve those who desire a practical example. Prerequisite knowledge would be the basics of Go (if not, read The Little Go Book) and some API basics (GET requests).
+
+Go is a statically typed language. This is what makes it difficult to parse something that is potentially dynamic (unknown at compile time, because we have yet to receive the data until we call it). You will find plenty of examples online that show you how to parse static JSON objects (i.e. ones with finite and expected values).
+
+So instead let's call an API to show you how to transform a reasonably complex JSON response object into a Go object that your Go program will be able to use.
+
+```json
+{
+  "data": [
+    { "id": 1, "name": "Bitcoin", "symbol": "BTC", "website_slug": "bitcoin" },
+    { "id": 2, "name": "Litecoin", "symbol": "LTC", "website_slug": "litecoin" }
+  ],
+  "metadata": { "timestamp": 1525137187, "num_cryptocurrencies": 1602, "error": null }
+}
+```
+
+```javascript
+var modularpattern = (function() {
+  var sum = 0;
+  return {
+    add:function() { sum = sum + 1; return sum; },
+    reset:function() { return sum = 0; }
+  }
+}());
+alert(modularpattern.add());
+alert(modularpattern.add());
+alert(modularpattern.reset());
+```
+
+Using this API call, we can access all the cryptocurrencies listed on the site in a array of JSON objects called `data`.

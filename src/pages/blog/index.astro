@@ -1,0 +1,16 @@
+---
+import MinimalLayout from "../../layouts/MinimalLayout.astro";
+import { getCollection, type CollectionEntry } from 'astro:content';
+const posts = (await getCollection('blog')).sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<MinimalLayout title="Blog">
+  <section class="post-list">
+    {posts.map(({ slug, data }) => (
+      <article class="post">
+        <h2 class="post-title"><a href={`/blog/${slug}/`}>{data.title}</a></h2>
+        <p class="post-excerpt">{data.description}</p>
+        <div class="post-meta">{new Date(data.date).toDateString()}</div>
+      </article>
+    ))}
+  </section>
+</MinimalLayout>

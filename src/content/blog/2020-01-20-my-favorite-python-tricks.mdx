@@ -1,0 +1,25 @@
+---
+title: My Favorite Python Tricks
+description: Some useful Python tricks for interviews and competitive programming.
+date: 2020-01-20
+---
+
+Lately, I've been doing a lot of interview prep with Python. I thought I'd compile some of my favorite useful tricks with Python to help out those in the same boat.
+
+For those of you in that boat, keep swimmin' 🏊‍♀️ 🚣‍♀️ ✌️
+
+## General Tricks
+
+General tips:
+
+- Always import specifically using `from x import y`
+- Use the standard library as much as possible
+- Write your code in functions
+
+## Comprehensions
+
+```python
+s = 'hello world'
+n = [i for i in range(len(s))]
+d = {s[i]:n[i] for i in range(len(s))}
+```
