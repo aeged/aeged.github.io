@@ -1,5 +1,5 @@
 ---
-const { title = 'Home' } = Astro.props;
+const { title = 'Home', description = 'Personal site & blog' } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -7,6 +7,14 @@ const { title = 'Home' } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} | ae ged</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | ae ged`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.origin + Astro.url.pathname} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | ae ged`} />
+    <meta name="twitter:description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -48,6 +56,9 @@ const { title = 'Home' } = Astro.props;
       article h1 { font-size: clamp(34px, 5vw, 44px); margin: 6px 0 12px; }
       article .meta { color: var(--muted); margin-bottom: 24px; }
       article p { font-size: 18px; line-height: 1.8; color: #111827; }
+      pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      pre { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; overflow:auto; }
+      img { max-width: 100%; height: auto; border-radius: 12px; }
       @media (max-width: 640px){ nav a{ margin-left: 14px; } .lede{ font-size: 18px; } }
     </style>
   </head>
