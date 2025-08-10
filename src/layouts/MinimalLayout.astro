@@ -60,7 +60,7 @@ const here = Astro.url.pathname;
       img { max-width: 100%; height: auto; border-radius: 12px; }
       @media (max-width: 640px){ nav a{ margin-left: 14px; } .lede{ font-size: 18px; } }
     </style>
-    <style>
+    <style is:global>
       /* TASK A — Global link style (appended) */
       :root{
         --text: #111827;    /* body text (gray-900) */
