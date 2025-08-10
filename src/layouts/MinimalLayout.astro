@@ -26,7 +26,7 @@ const here = Astro.url.pathname;
         --bg: #ffffff;
         --fg: #0b0c0e;
         --muted: #6b7280;
-        --link: #0f172a;
+        --link: #374151; /* align with global link color */
         --accent: #111827;
         --border: #e5e7eb;
         --card: #f8fafc;
@@ -143,7 +143,9 @@ const here = Astro.url.pathname;
       }
 
       /* Blog article code blocks — match .card styling */
-      article pre{
+      /* Shiki renders <pre class="astro-code ...">; normalize all pre blocks */
+      article pre,
+      article pre.astro-code{
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: var(--radius);
