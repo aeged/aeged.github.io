@@ -1,5 +1,6 @@
 ---
 const { title = 'Home', description = 'Personal site & blog' } = Astro.props;
+const here = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="en">
@@ -39,8 +40,6 @@ const { title = 'Home', description = 'Personal site & blog' } = Astro.props;
       header { display: grid; grid-template-columns: 1fr auto; align-items: center; }
       .brand { font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -0.02em; }
       nav a { color: var(--link); text-decoration: none; margin-left: 24px; font-weight: 600; opacity: .9; }
-      nav a.active{ opacity: 1; }
-      nav a:hover { text-decoration: underline; }
       .title { font-size: clamp(44px, 7vw, 64px); line-height: 1.02; margin: 48px 0 18px; font-weight: 800; letter-spacing: -0.02em; }
       .lede { color: var(--muted); font-size: 20px; line-height: 1.6; max-width: 58ch; }
       .muted { color: var(--muted); }
@@ -61,14 +60,85 @@ const { title = 'Home', description = 'Personal site & blog' } = Astro.props;
       img { max-width: 100%; height: auto; border-radius: 12px; }
       @media (max-width: 640px){ nav a{ margin-left: 14px; } .lede{ font-size: 18px; } }
     </style>
+    <style>
+      /* TASK A — Global link style (appended) */
+      :root{
+        --text: #111827;    /* body text (gray-900) */
+        --link: #374151;    /* links (gray-700), slightly lighter than body */
+        --muted: #6b7280;   /* secondary text (gray-500) */
+        --muted-2: #9ca3af; /* tertiary text (gray-400) */
+      }
+
+      html, body { color: var(--text); }
+
+      a, a:visited{
+        color: var(--link);
+        text-decoration: none;
+        background-image: linear-gradient(currentColor, currentColor);
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 1px;              /* hidden underline */
+        transition: background-size .18s ease; /* smooth reveal */
+      }
+
+      a:hover{
+        background-size: 100% 1px;            /* animate underline in */
+      }
+
+      /* keyboard focus still visible */
+      a:focus-visible{
+        outline: 2px solid var(--muted-2);
+        outline-offset: 2px;
+      }
+
+      /* respect reduced motion */
+      @media (prefers-reduced-motion: reduce){
+        a{ transition: none; }
+      }
+
+      /* TASK B — Blog index layout */
+      .page-title{
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 800;
+        margin: 0 0 2rem;
+      }
+
+      .post-list{ display: grid; gap: 2rem; }
+
+      .post-title{
+        font-weight: 700;
+        font-size: clamp(18px, 2.4vw, 22px);
+        margin: 0 0 .25rem;
+      }
+
+      .post-excerpt{
+        color: var(--muted);    /* light grey preview line */
+        margin: 0;
+      }
+
+      .post-meta{
+        color: var(--muted-2);  /* lighter grey for the date */
+        font-size: .875rem;
+        margin-top: .5rem;
+      }
+
+      /* TASK C — Navigation: grey out current page */
+      .site-nav a[aria-current="page"]{
+        color: var(--muted);
+        pointer-events: none;                /* not clickable */
+        cursor: default;
+        background-size: 0 1px !important;   /* disable hover underline */
+        outline: none;                       /* no focus ring on disabled item */
+      }
+    </style>
   </head>
   <body>
     <div class="wrap">
       <header>
         <div class="brand">Alex Gednov</div>
-        <nav>
-          <a href="/" class="{(Astro.url.pathname === '/' || Astro.url.pathname.startsWith('/about')) ? 'active' : ''}">About</a>
-          <a href="/blog" class="{Astro.url.pathname.startsWith('/blog') ? 'active' : ''}">Blog</a>
+        <nav class="site-nav">
+          <a href="/about" aria-current={(here === '/' || here.startsWith('/about')) ? 'page' : undefined}>About</a>
+          <a href="/blog" aria-current={here.startsWith('/blog') ? 'page' : undefined}>Blog</a>
         </nav>
       </header>
       <main>
